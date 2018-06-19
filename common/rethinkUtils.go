@@ -3,7 +3,6 @@ package common
 import (
 	r "gopkg.in/gorethink/gorethink.v4"
 	"log"
-	"time"
 )
 
 var session *r.Session
@@ -14,8 +13,6 @@ func GetSession() *r.Session {
 		session, err = r.Connect(r.ConnectOpts {
 			Address: AppConfig.Host,
 			Database : AppConfig.Database,
-			Username: AppConfig.DBUser,
-			Password: AppConfig.DBPwd,
 		})
 		if err != nil {
 			log.Fatalln(err.Error())
@@ -27,13 +24,10 @@ func GetSession() *r.Session {
 func createDbSession() {
 	var err error
 	session, err = r.Connect(r.ConnectOpts{
-		Address: AppConfig.Host,
-		Database : AppConfig.Database,
-		Username: AppConfig.DBUser,
-		Password: AppConfig.DBPwd,
-		Timeout: 60 * time.Second,
+		Address : AppConfig.Host,
+		Database: AppConfig.Database,
 	})
-
+	r.SetTags("gorethink","json")
 	if err != nil {
 		log.Fatalf("[creqteDbSession]: %s \n", err)
 	}

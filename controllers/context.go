@@ -12,11 +12,15 @@ type Context struct {
 func (c *Context) Close() {
 	c.RethinkSession.Close()
 }
+var context *Context
 
-func NewContext() *Context {
+func NewContext() {
 	session := common.GetSession()
-	context := &Context{
+	context = &Context{
 		RethinkSession: session,
 	}
+}
+
+func GetContext() *Context {
 	return context
 }

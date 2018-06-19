@@ -1,0 +1,6 @@
+{
+  "table":"employees",
+  "fields": ["id","firstName", "lastname", "email",
+    "registeredOn","authorized","frequency","authStarting",
+    "authEnding"]
+}

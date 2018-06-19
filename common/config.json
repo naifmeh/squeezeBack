@@ -1,0 +1,5 @@
+{
+  "Server":":8080",
+  "Host" : "localhost:28015",
+  "Database" : "squeezedb"
+}

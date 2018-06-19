@@ -10,7 +10,9 @@ import (
 	"github.com/gorilla/context"
 	"errors"
 	"strings"
+	"crypto/rsa"
 )
+
 type AppClaims struct {
 	DeviceName string `json:"deviceName"`
 	DeviceMac string `json:"deviceMac"`
@@ -20,19 +22,35 @@ type AppClaims struct {
 
 /* Private key sign JWT, public Key verify JWT in reauest */
 const (
-	privKeyPath = "keys/app.rsa"
-	pubKeyPath = "keys/app.rsa.pub"
+	privKeyPath = "keys/jwtRS256.key"
+	pubKeyPath = "keys/jwtRS256.key.pub"
 )
 
 var (
-	verifyKey, signKey []byte
+	verifyKey *rsa.PublicKey
+	signKey *rsa.PrivateKey
 )
 
 func initKeys() {
 	var err error
-	signKey, err = ioutil.ReadFile(privKeyPath)
+	signBytes, err := ioutil.ReadFile(privKeyPath)
 	if err != nil {
-		log.Fatalf("[initKeys]: %s \n", err)
+		log.Fatalf("[initKeys]{signBytes}: %s \n", err)
+	}
+
+	signKey, err = jwt.ParseRSAPrivateKeyFromPEM(signBytes)
+	if err != nil {
+		log.Fatalf("[initKeys]{signKey}: %s \n", err)
+	}
+
+	verifyBytes, err := ioutil.ReadFile(pubKeyPath)
+	if err != nil {
+		log.Fatalf("[initKeys]{verifyBytes}: %s \n", err)
+	}
+
+	verifyKey, err = jwt.ParseRSAPublicKeyFromPEM(verifyBytes)
+	if err != nil {
+		log.Fatalf("[initKeys]{verifyKey}: %s \n", err)
 	}
 }
 

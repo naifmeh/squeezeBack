@@ -7,6 +7,6 @@ import (
 
 func SetDeviceRoutes( router *mux.Router) *mux.Router {
 	router.HandleFunc("/device/register",controllers.Register).Methods("POST")
-	router.HandleFunc("/device/authenticate",controllers.Authenticate).Methods("")
+	router.HandleFunc("/device/authenticate",controllers.Authenticate).Methods("POST")
 	return router
 }

@@ -1,0 +1,4 @@
+{
+"table":"devices",
+"fields": ["id","deviceMac","deviceName"]
+}

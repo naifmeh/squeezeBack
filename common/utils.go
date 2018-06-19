@@ -20,11 +20,11 @@ type (
 )
 
 type configuration struct {
-	Server, Host, DBUser, DBPwd, Database string
+	Server, Host, Database string
 }
 type dbconfiguration struct {
-	Table string
-	Fields []string
+	Table string `json:"table"`
+	Fields []string `json:"fields"`
 }
 
 var EmployeeDbStruct, DeviceDbStruct dbconfiguration
@@ -45,13 +45,14 @@ func loadAppConfig() {
 	decoder := json.NewDecoder(file)
 	AppConfig = configuration{}
 	err = decoder.Decode(&AppConfig)
+	log.Print(AppConfig)
 	if err != nil {
 		log.Fatalf("[loadAppConfig] : %s\n", err)
 	}
 }
 
 func loadEmployeeConfig() {
-	file, err := os.Open("common/db.json")
+	file, err := os.Open("common/employeeTable.json")
 	defer file.Close()
 	if err != nil {
 		log.Fatalf("[loadDbConfig]: %s\n", err)
@@ -65,7 +66,7 @@ func loadEmployeeConfig() {
 }
 
 func loadDeviceConfig() {
-	file, err := os.Open("common/db.json")
+	file, err := os.Open("common/devicesTable.json")
 	defer file.Close()
 	if err != nil {
 		log.Fatalf("[loadDbConfig]: %s\n", err)

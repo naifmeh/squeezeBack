@@ -23,10 +23,15 @@ type(
 	}
 
 	AuthDeviceModel struct {
-		DeviceName string `json:"deviceName"`
+		Device models.Device `json:"device"`
 		Token string `json:"token"`
 	}
 
+)
 
+type (
+	EmployeeResource struct {
+		Data models.Employee `json:"data"`
+	}
 
 )
