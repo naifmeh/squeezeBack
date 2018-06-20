@@ -12,6 +12,7 @@ import (
 )
 
 func AddEmployee(employee models.Employee,session *r.Session) error {
+
 	jsonEmployee, erreur := json.Marshal(employee)
 	if erreur != nil {
 		panic(erreur)
@@ -38,10 +39,18 @@ func FindEmployee(employee models.Employee, session *r.Session) (e models.Employ
 		log.Print(row)
 		nom := fmt.Sprintf("%s-%s",row["firstName"],row["lastName"])
 		nomDetected := fmt.Sprintf("%s-%s",employee.FirstName,employee.LastName)
+
 		jsonEmployee,_:= json.Marshal(row)
 		var employeeRow models.Employee
 		json.Unmarshal(jsonEmployee,&employeeRow)
 		if strings.ToLower(nomDetected) == strings.ToLower(nom) {
+			fmt.Printf(" beg : %d , end %d",employeeRow.AuthStarting,employeeRow.AuthEnding)
+			if CompareAuthorizationTime(employeeRow.AuthStarting,employeeRow.AuthEnding) == false {
+				return models.Employee{}, errors.New("Not Authorized for now")
+			}
+			if employeeRow.Authorized == false {
+				return models.Employee{}, errors.New("Not authorized")
+			}
 			return employeeRow,nil
 		}
 	}

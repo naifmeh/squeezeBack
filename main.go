@@ -15,7 +15,7 @@ var context *controllers.Context
 func main() {
 	common.StartUp()
 
-	context = controllers.NewContext()
+	controllers.NewContext()
 	defer context.Close()
 
 	router := routers.InitRoutes()
