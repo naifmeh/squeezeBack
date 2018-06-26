@@ -8,6 +8,8 @@ func InitRoutes() *mux.Router {
 	router = SetEmployeeRoutes(router)
 	/* Setting devices routes */
 	router = SetDeviceRoutes(router)
+	/* Setting network routes */
+	router = SetNetworkRoutes(router)
 
 	return router
 }

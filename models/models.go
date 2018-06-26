@@ -18,5 +18,8 @@ type (
 		DeviceName string `json:"deviceName"`
 		DeviceMac string `json: "deviceMac, omitempty"`
 	}
+	Network struct {
+		Train bool `json:"train"`
+	}
 )
 

@@ -15,6 +15,9 @@ or an embedded system.
 
 Kafka is message broker based on internal commit log, as it focus on storing massive amount of data on disk, allowing consumption in real-time or delayed, as the storing data is kept locally.
 
+Starting kafka :
+sudo bin/kafka-server-start.sh config/server.properties 
+
 ## REST API
 
 ### GoLang
@@ -29,4 +32,5 @@ Some lines of code are enough to build a working web server and process requests
 Further discussion on go concepts will be available in this documentation.
 
 #### The net/http library
+
 

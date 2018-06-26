@@ -38,6 +38,8 @@ type (
 		Data models.Employee `json"data"`
 	}
 
-
-
 )
+
+type NetworkResource struct {
+	Data models.Network `json:"data"`
+}
