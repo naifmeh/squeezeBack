@@ -95,3 +95,33 @@ func AuthorizeEmployee(w http.ResponseWriter, r *http.Request) {
 		w.Write(j)
 	}
 }
+
+func GetEmployees(w http.ResponseWriter, r *http.Request) {
+	context := GetContext()
+	returnedList, err := data.GetAllEmployee(context.RethinkSession)
+
+	if err != nil {
+		common.DisplayAppError(
+			w,
+			err,
+			"Error while retrieving user list",
+			500,
+		)
+		return
+	}
+
+	if j, err := json.Marshal(returnedList); err !=nil {
+		common.DisplayAppError(
+			w,
+			err,
+			"Unexpected error",
+			500,
+		)
+		return
+	} else {
+		w.Header().Set("Content-Type","application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(j)
+	}
+
+}

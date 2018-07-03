@@ -86,7 +86,24 @@ func RemoveEmployee(employee models.Employee, session *r.Session) error {
 	}
 	return nil
 }
+func GetAllEmployee(session *r.Session) (e []models.Employee, err error){
+	cursor, err := r.Table(common.EmployeeDbStruct.Table).Run(session)
+	if err != nil {
+		return nil,err
+	}
+	defer cursor.Close()
 
+	var row map[string]interface{}
+
+	for cursor.Next(&row) {
+		jsonEmployee, _ := json.Marshal(row)
+		var employeeRow models.Employee
+		json.Unmarshal(jsonEmployee,&employeeRow)
+		e = append(e, employeeRow)
+	}
+
+	return e,nil
+}
 func UpdateEmployee(employee models.Employee, session *r.Session) (e models.Employee,err error) {
  return
 }

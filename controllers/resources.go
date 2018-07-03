@@ -34,6 +34,7 @@ type (
 		Data models.Employee `json:"data"`
 	}
 
+
 	AuthEmployeeResource struct {
 		Data models.Employee `json"data"`
 	}
