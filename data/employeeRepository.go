@@ -9,6 +9,11 @@ import (
 	"strings"
 	"errors"
 	"encoding/json"
+	"encoding/base64"
+	"image"
+	"bytes"
+	"os"
+	"image/jpeg"
 )
 
 func AddEmployee(employee models.Employee,session *r.Session) error {
@@ -104,6 +109,32 @@ func GetAllEmployee(session *r.Session) (e []models.Employee, err error){
 
 	return e,nil
 }
+
+func SaveEmployeeImage(imageface models.ImageFace, session *r.Session) error {
+
+	data, err := base64.StdEncoding.DecodeString(imageface.Data)
+	if err != nil {
+		return err
+	}
+
+	img,_,_ := image.Decode(bytes.NewReader(data))
+	path := "/home/naif/Documents/squeezeCNN/training-images/"
+	path += imageface.Name
+	//err = os.Mkdir(path,)
+	path += "/"
+	path += imageface.Filename
+	out, err := os.Create(path)
+
+	if err != nil  {
+		return err
+	}
+
+	err = jpeg.Encode(out, img, nil)
+
+	return err
+
+}
+
 func UpdateEmployee(employee models.Employee, session *r.Session) (e models.Employee,err error) {
  return
 }

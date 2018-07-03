@@ -14,6 +14,14 @@ type (
 		AuthStarting int64 `json:"authStarting"`
 		AuthEnding int64 `json:"authEnding""`
 	}
+
+	ImageFace struct {
+		timestamp int64 `json:"timestamp"`
+		Name string `json:"name"`
+		Filename string `json:"filename"`
+		Data string `json:"data"`
+	}
+
 	Device struct {
 		DeviceName string `json:"deviceName"`
 		DeviceMac string `json: "deviceMac, omitempty"`
