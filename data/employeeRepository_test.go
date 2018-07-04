@@ -70,5 +70,44 @@ func TestUpdateEmployee(t *testing.T) {
 	for cursor.Next(&row) {
 		fmt.Print(row)
 	}*/
+	//mock.AssertExpectations(t)
+}
+
+func TestGetAllEmployee(t *testing.T) {
+	mock := r.NewMock()
+	mock.On(r.Table("employees")).Return([]interface{}{
+		map[string]interface{}{
+			"id":           "abcefg5963",
+			"firstName":    "Naif",
+			"lastName":     "Mehanna",
+			"email":        "naif.meh@gmail.com",
+			"registeredOn": time.Now().String(),
+			"authorized":   "true",
+			"frequency":    "0",
+			"authStarting": "1554521050",
+			"authEnding":   "589852547881"},
+		map[string]interface{}{
+			"id":           "abcefg5963de",
+			"firstName":    "Naifs",
+			"lastName":     "Solotov",
+			"email":        "naif.meh@gmail.com",
+			"registeredOn": time.Now().String(),
+			"authorized":   "true",
+			"frequency":    "0",
+			"authStarting": "1554521050",
+			"authEnding":   "589852547881"},
+	},nil)
+
+	cursor, err := r.Table("employees").Run(mock)
+	defer cursor.Close()
+	if err != nil {
+		t.Errorf("Could not load : %v", err)
+	}
+	var row map[string]interface{}
+
+	for cursor.Next(&row) {
+		fmt.Println(row)
+	}
+
 	mock.AssertExpectations(t)
 }

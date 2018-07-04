@@ -6,6 +6,7 @@ import (
 	"squeezecnn/common"
 	"squeezecnn/data"
 	"time"
+	"squeezecnn/models"
 )
 
 func RegisterEmployee(w http.ResponseWriter, r *http.Request) {
@@ -96,6 +97,35 @@ func AuthorizeEmployee(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func SaveEmployeeFace(w http.ResponseWriter, r *http.Request) {
+	var dataImage models.ImageFace
+
+	err := json.NewDecoder(r.Body).Decode(&dataImage)
+	if err != nil {
+		common.DisplayAppError(
+			w,
+			err,
+			"Invalid data",
+			500,
+		)
+		return
+	}
+
+	err = data.SaveEmployeeImage(dataImage)
+
+	if err != nil {
+		common.DisplayAppError(
+			w,
+			err,
+			"Could not save image",
+			500,
+		)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
+
 func GetEmployees(w http.ResponseWriter, r *http.Request) {
 	context := GetContext()
 	returnedList, err := data.GetAllEmployee(context.RethinkSession)
@@ -125,3 +155,5 @@ func GetEmployees(w http.ResponseWriter, r *http.Request) {
 	}
 
 }
+
+

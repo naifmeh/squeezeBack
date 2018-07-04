@@ -110,7 +110,7 @@ func GetAllEmployee(session *r.Session) (e []models.Employee, err error){
 	return e,nil
 }
 
-func SaveEmployeeImage(imageface models.ImageFace, session *r.Session) error {
+func SaveEmployeeImage(imageface models.ImageFace) error {
 
 	data, err := base64.StdEncoding.DecodeString(imageface.Data)
 	if err != nil {
@@ -120,7 +120,7 @@ func SaveEmployeeImage(imageface models.ImageFace, session *r.Session) error {
 	img,_,_ := image.Decode(bytes.NewReader(data))
 	path := "/home/naif/Documents/squeezeCNN/training-images/"
 	path += imageface.Name
-	//err = os.Mkdir(path,)
+	err = os.Mkdir(path,os.FileMode(0777))
 	path += "/"
 	path += imageface.Filename
 	out, err := os.Create(path)

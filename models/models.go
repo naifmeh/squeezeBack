@@ -16,7 +16,7 @@ type (
 	}
 
 	ImageFace struct {
-		timestamp int64 `json:"timestamp"`
+		Timestamp int64 `json:"timestamp"`
 		Name string `json:"name"`
 		Filename string `json:"filename"`
 		Data string `json:"data"`
