@@ -118,7 +118,7 @@ func SaveEmployeeImage(imageface models.ImageFace) error {
 	}
 
 	img,_,_ := image.Decode(bytes.NewReader(data))
-	path := "/home/naif/Documents/squeezeCNN/training-images/"
+	path := "/home/ubuntu/Documents/squeezeCNN/training-images/"
 	path += imageface.Name
 	err = os.Mkdir(path,os.FileMode(0777))
 	path += "/"
