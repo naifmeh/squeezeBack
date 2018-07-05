@@ -156,4 +156,46 @@ func GetEmployees(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func UpdateEmployee(w http.ResponseWriter, r *http.Request) {
+	var dataEmployee EmployeeResource
+
+	err := json.NewDecoder(r.Body).Decode(&dataEmployee)
+	if err != nil {
+		common.DisplayAppError(
+			w,
+			err,
+			"Unexpected json error",
+			500,
+		)
+		return
+	}
+	context := GetContext()
+	employee := dataEmployee.Data
+	employee, err = data.UpdateEmployee(employee, context.RethinkSession)
+
+	if err != nil {
+		common.DisplayAppError(
+			w,
+			err,
+			"Error while updating",
+			500,
+		)
+		return
+	}
+
+	if j, err := json.Marshal(employee); err != nil {
+		common.DisplayAppError(
+			w,
+			err,
+			"Unexpected json error",
+			500,
+		)
+		return
+	} else {
+		w.Header().Set("Content-Type","application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(j)
+	}
+}
+
 

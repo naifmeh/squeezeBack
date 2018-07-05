@@ -32,6 +32,42 @@ func AddEmployee(employee models.Employee,session *r.Session) error {
 	return err
 }
 
+func UpdateEmployee(employee models.Employee, session *r.Session) (e models.Employee,err error) {
+	jsonEmployee, err := json.Marshal(employee)
+
+	if err != nil {
+		return models.Employee{}, err
+	}
+
+	var mapEmployee map[string]interface{}
+	err = json.Unmarshal(jsonEmployee,&mapEmployee)
+	if err != nil {
+		return models.Employee{}, err
+	}
+
+	cursor, err := r.Table(common.EmployeeDbStruct.Table).Run(session)
+	defer cursor.Close()
+	var row map[string]interface{}
+	var id string
+	for cursor.Next(&row) {
+		if t, ok := row["email"].(string); ok {
+			if t == employee.Email {
+				id = row["id"].(string)
+				break
+			}
+		}
+	}
+
+	cursor, err = r.Table(common.EmployeeDbStruct.Table).Get(id).Update(mapEmployee).Run(session)
+	defer cursor.Close()
+	if err != nil {
+		return models.Employee{}, err
+	}
+
+	return employee,nil
+}
+
+
 func FindEmployee(employee models.Employee, session *r.Session) (e models.Employee,err error) {
 	cursor, err := r.Table(common.EmployeeDbStruct.Table).Run(session)
 	defer cursor.Close()
@@ -91,6 +127,7 @@ func RemoveEmployee(employee models.Employee, session *r.Session) error {
 	}
 	return nil
 }
+
 func GetAllEmployee(session *r.Session) (e []models.Employee, err error){
 	cursor, err := r.Table(common.EmployeeDbStruct.Table).Run(session)
 	if err != nil {
@@ -118,7 +155,7 @@ func SaveEmployeeImage(imageface models.ImageFace) error {
 	}
 
 	img,_,_ := image.Decode(bytes.NewReader(data))
-	path := "/home/naif/Documents/squeezeCNN/training-images/"
+	path := common.GetTrainingPath()
 	path += imageface.Name
 	err = os.Mkdir(path,os.FileMode(0777))
 	path += "/"
@@ -135,8 +172,5 @@ func SaveEmployeeImage(imageface models.ImageFace) error {
 
 }
 
-func UpdateEmployee(employee models.Employee, session *r.Session) (e models.Employee,err error) {
- return
-}
 
 

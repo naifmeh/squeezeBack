@@ -1,5 +1,6 @@
 {
   "Server":":8080",
   "Host" : "localhost:28015",
-  "Database" : "squeezedb"
+  "Database" : "squeezedb",
+  "TrainingPath" : "/home/naif/Documents/squeezeCNN/training-images"
 }

@@ -20,7 +20,7 @@ type (
 )
 
 type configuration struct {
-	Server, Host, Database string
+	Server, Host, Database, TrainingPath string
 }
 type dbconfiguration struct {
 	Table string `json:"table"`
@@ -34,6 +34,10 @@ func initConfig() {
 	loadAppConfig()
 	loadEmployeeConfig()
 	loadDeviceConfig()
+}
+
+func GetTrainingPath() string {
+	return AppConfig.TrainingPath
 }
 
 func loadAppConfig() {
