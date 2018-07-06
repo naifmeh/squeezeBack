@@ -7,6 +7,8 @@ import (
 	"squeezecnn/data"
 	"time"
 	"squeezecnn/models"
+	"os"
+	"fmt"
 )
 
 func RegisterEmployee(w http.ResponseWriter, r *http.Request) {
@@ -91,6 +93,15 @@ func AuthorizeEmployee(w http.ResponseWriter, r *http.Request) {
 		)
 		return
 	} else {
+		f,err := os.OpenFile("./employeesLogs",os.O_APPEND|os.O_WRONLY|os.O_CREATE,0600)
+		if err != nil {
+			fmt.Printf("Error writing to file : %v",err)
+		}
+		defer f.Close()
+		text := returnedEmployee.FirstName+" "+returnedEmployee.LastName + " authorized at "+time.Now().String()
+		if _,err = f.WriteString(text); err != nil {
+			fmt.Printf("Error writing to file : %v",err)
+		}
 		w.Header().Set("Content-Type","application/json")
 		w.WriteHeader(http.StatusOK)
 		w.Write(j)
@@ -184,6 +195,77 @@ func UpdateEmployee(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if j, err := json.Marshal(employee); err != nil {
+		common.DisplayAppError(
+			w,
+			err,
+			"Unexpected json error",
+			500,
+		)
+		return
+	} else {
+		w.Header().Set("Content-Type","application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(j)
+	}
+}
+
+func RemoveEmployee( w http.ResponseWriter, r *http.Request) {
+	var dataEmployee EmployeeResource
+
+	err := json.NewDecoder(r.Body).Decode(&dataEmployee)
+	if err != nil {
+		common.DisplayAppError(
+			w,
+			err,
+			"Unexpected json error",
+			500,
+		)
+		return
+	}
+	context := GetContext()
+	employee := dataEmployee.Data
+	err = data.RemoveEmployee(employee, context.RethinkSession)
+
+	if err != nil {
+		common.DisplayAppError(
+			w,
+			err,
+			"Error while updating",
+			500,
+		)
+		return
+	}
+
+	if j, err := json.Marshal(employee); err != nil {
+		common.DisplayAppError(
+			w,
+			err,
+			"Unexpected json error",
+			500,
+		)
+		return
+	} else {
+		w.Header().Set("Content-Type","application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(j)
+	}
+
+
+}
+
+func GetLog(w http.ResponseWriter, r *http.Request) {
+	str,err := data.ReadLogFile()
+	if err != nil {
+		common.DisplayAppError(
+			w,
+			err,
+			"Error reading log file",
+			500,
+		)
+		return
+	}
+
+	if j, err := json.Marshal(str); err != nil {
 		common.DisplayAppError(
 			w,
 			err,

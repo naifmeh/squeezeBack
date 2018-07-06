@@ -14,6 +14,7 @@ import (
 	"bytes"
 	"os"
 	"image/jpeg"
+	"bufio"
 )
 
 func AddEmployee(employee models.Employee,session *r.Session) error {
@@ -44,7 +45,6 @@ func UpdateEmployee(employee models.Employee, session *r.Session) (e models.Empl
 	if err != nil {
 		return models.Employee{}, err
 	}
-
 	cursor, err := r.Table(common.EmployeeDbStruct.Table).Run(session)
 	defer cursor.Close()
 	var row map[string]interface{}
@@ -170,6 +170,24 @@ func SaveEmployeeImage(imageface models.ImageFace) error {
 
 	return err
 
+}
+
+func ReadLogFile() (str []string,err error) {
+	file, err := os.Open("./employeesLogs")
+	if err != nil {
+		return nil,err
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		str = append(str, scanner.Text())
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+	return str,nil
 }
 
 
