@@ -190,5 +190,12 @@ func ReadLogFile() (str []string,err error) {
 	return str,nil
 }
 
+func DeleteLogFile() error {
+	err := os.Remove("./employeesLogs")
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 
