@@ -81,6 +81,16 @@ func AuthorizeEmployee(w http.ResponseWriter, r *http.Request) {
 			"User either not found or not authorized",
 			403,
 		)
+		f, err := os.OpenFile("./employeesLogs", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+		if err != nil {
+			fmt.Printf("Error writing to file : %v", err)
+		}
+		defer f.Close()
+		text := employee.FirstName + " " + employee.LastName + " unauthorized access attempt at " + time.Now().String() + "\n"
+
+		if _, err = f.WriteString(text); err != nil {
+			fmt.Printf("Error writing to file : %v", err)
+		}
 		return
 	}
 
@@ -98,7 +108,7 @@ func AuthorizeEmployee(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("Error writing to file : %v",err)
 		}
 		defer f.Close()
-		text := returnedEmployee.FirstName+" "+returnedEmployee.LastName + " authorized at "+time.Now().String()
+		text := returnedEmployee.FirstName + " " + returnedEmployee.LastName + " authorized at " + time.Now().String() + "\n"
 		if _,err = f.WriteString(text); err != nil {
 			fmt.Printf("Error writing to file : %v",err)
 		}
