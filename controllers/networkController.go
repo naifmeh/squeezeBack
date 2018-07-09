@@ -36,3 +36,19 @@ func TrainNetwork(w http.ResponseWriter,r *http.Request) {
 	}
 
 }
+
+func RemovePics(w http.ResponseWriter, r *http.Request) {
+
+	err := data.RemovePictures()
+	if err != nil {
+		common.DisplayAppError(
+			w,
+			err,
+			"Could not remove pictures",
+			500,
+		)
+		return
+	} else {
+		w.WriteHeader(http.StatusOK)
+	}
+}

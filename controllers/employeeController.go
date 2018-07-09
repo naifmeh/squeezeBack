@@ -280,4 +280,19 @@ func GetLog(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func DeleteLogFile(w http.ResponseWriter, r *http.Request) {
+
+	err := data.DeleteLogFile()
+	if err != nil {
+		common.DisplayAppError(
+			w,
+			err,
+			"Error deleting log",
+			500,
+		)
+		return
+	} else {
+		w.WriteHeader(http.StatusOK)
+	}
+}
 

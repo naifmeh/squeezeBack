@@ -16,9 +16,8 @@ func SetEmployeeRoutes(router *mux.Router) *mux.Router {
 	employeeRouter.HandleFunc("/employees/image",controllers.SaveEmployeeFace).Methods("POST")
 	employeeRouter.HandleFunc("/employees/remove",controllers.RemoveEmployee).Methods("DELETE")
 	employeeRouter.HandleFunc("/employees/logs",controllers.GetLog).Methods("GET")
-	/*employeeRouter.HandleFunc("/recognition/face/{name}",controllers.DeleteEmployee).Methods("DELETE")
-	employeeRouter.HandleFunc("/recognition/face/",controllers.UpdateEmployee).Methods("PUT")
-	*/
+	employeeRouter.HandleFunc("/employees/logs", controllers.DeleteLogFile).Methods("DELETE")
+
 	router.PathPrefix("/employees").Handler(negroni.New(
 		negroni.HandlerFunc(common.Authorize),
 		negroni.Wrap(employeeRouter),
