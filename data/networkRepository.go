@@ -4,6 +4,8 @@ import (
 	"squeezecnn/models"
 	"os/exec"
 	"errors"
+	"os"
+	"path/filepath"
 )
 
 func TrainNetwork(network models.Network) error {
@@ -23,10 +25,21 @@ func TrainNetwork(network models.Network) error {
 	return nil
 }
 
-func RemovePictures() error {
-	cmd := "./scripts/removePics.sh"
-	if err := exec.Command("/bin/sh", cmd).Run(); err != nil {
-		return errors.New("could not remove pictures")
+func RemoveContents(dir string) error {
+	d, err := os.Open(dir)
+	if err != nil {
+		return err
+	}
+	defer d.Close()
+	names, err := d.Readdirnames(-1)
+	if err != nil {
+		return err
+	}
+	for _, name := range names {
+		err = os.RemoveAll(filepath.Join(dir, name))
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }

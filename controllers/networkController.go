@@ -39,7 +39,7 @@ func TrainNetwork(w http.ResponseWriter,r *http.Request) {
 
 func RemovePics(w http.ResponseWriter, r *http.Request) {
 
-	err := data.RemovePictures()
+	err := data.RemoveContents(common.GetTrainingPath())
 	if err != nil {
 		common.DisplayAppError(
 			w,
