@@ -240,7 +240,7 @@ func RemoveEmployee( w http.ResponseWriter, r *http.Request) {
 		common.DisplayAppError(
 			w,
 			err,
-			"Error while updating",
+			"Error while removing",
 			500,
 		)
 		return

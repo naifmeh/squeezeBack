@@ -108,8 +108,8 @@ func RemoveEmployee(employee models.Employee, session *r.Session) error {
 	var row map[string]interface{}
 	var employeeId string
 	for cursor.Next(&row) {
-		nom := fmt.Sprintf("%s-%s",row["firstName"],row["lastName"])
-		nomToDelete := fmt.Sprintf("%s-%s",employee.FirstName,employee.LastName)
+		nom := fmt.Sprintf("%s", row["email"])
+		nomToDelete := fmt.Sprintf("%s", employee.Email)
 		if strings.ToLower(nom) == strings.ToLower(nomToDelete) {
 			if t, ok := row["id"].(string); ok {
 				employeeId = t

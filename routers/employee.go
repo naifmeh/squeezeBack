@@ -14,7 +14,7 @@ func SetEmployeeRoutes(router *mux.Router) *mux.Router {
 	employeeRouter.HandleFunc("/employees/face",controllers.AuthorizeEmployee).Methods("POST")
 	employeeRouter.HandleFunc("/employees/list",controllers.GetEmployees).Methods("GET")
 	employeeRouter.HandleFunc("/employees/image",controllers.SaveEmployeeFace).Methods("POST")
-	employeeRouter.HandleFunc("/employees/remove",controllers.RemoveEmployee).Methods("DELETE")
+	employeeRouter.HandleFunc("/employees/remove", controllers.RemoveEmployee).Methods("POST")
 	employeeRouter.HandleFunc("/employees/logs",controllers.GetLog).Methods("GET")
 	employeeRouter.HandleFunc("/employees/logs", controllers.DeleteLogFile).Methods("DELETE")
 
