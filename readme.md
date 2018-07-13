@@ -11,12 +11,24 @@ We would like to introduce the following features in the project :
 Clients should be able to run on any platform, being a mobile ap, a website,
 or an embedded system.
 
-## Kafka
+## RethinkDb
 
-Kafka is message broker based on internal commit log, as it focus on storing massive amount of data on disk, allowing consumption in real-time or delayed, as the storing data is kept locally.
+RethinkDb is a NoSQL database with an open-source base code that is maintained by a large community of contributers. RethinkDb advantage compared to more famous NoSQL databases is the support of real-time queries implemented by changefeeds,
+which are based on a publish-subscribe pattern allowing instant notifications of any table change. This is particularly useful for uses in push notifications or very latency limited applications.
+RethinkDb offers a GeoJSON support for geo-queries and geolocation oriented data manipulation, as well as scientific measurement handling.
+RethinkDb lack of popularity comes from the fact that the project has been abandoned multiple times before being restarted, but in no way this limit the power of RethinkDb as the community is constantly maintaining diverse repository and implementations
+for each language.
 
-Starting kafka :
-sudo bin/kafka-server-start.sh config/server.properties 
+Our database plan is the following :
+
+    -------------------
+    | squeezedb |
+    :------------------:
+    | employees |
+    -------------------
+    |    devices    |
+    -------------------
+
 
 ## REST API
 
