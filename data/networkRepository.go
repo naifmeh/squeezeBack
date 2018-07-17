@@ -10,9 +10,9 @@ import (
 
 func TrainNetwork(network models.Network) error {
 	if network.Train == true {
-		cmd := "./scripts/trainNet.sh"
+		cmd := "scripts/trainNet.sh"
 		if err := exec.Command("/bin/sh", cmd).Run(); err == nil {
-			cmd = "./scripts/executeProducer.sh"
+			cmd = "scripts/executeProducer.sh"
 
 			if err = exec.Command("/bin/sh", cmd).Run(); err != nil {
 				return errors.New("could not execute producer")
